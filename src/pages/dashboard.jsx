@@ -21,16 +21,18 @@ function Dashboard() {
         { title },
         {
           headers: {
-            Authorization: `${localStorage.getItem("token")}`,
+            Authorization: `${localStorage.getItem("cvb_token")}`,
           },
-        }
+        },
       );
       setCVs([...CVs, newCV.data.resume]);
       toast.success(newCV.data.message);
       setShowCreateCV(false);
       navigate(`builder/${newCV.data.resume._id}`);
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message || "An error occurred");
+      toast.error(
+        error.response?.data?.message || error.message || "An error occurred",
+      );
     }
   };
   const UploadCV = async (e) => {
@@ -43,9 +45,9 @@ function Dashboard() {
         { resumeText },
         {
           headers: {
-            Authorization: `${localStorage.getItem("token")}`,
+            Authorization: `${localStorage.getItem("cvb_token")}`,
           },
-        }
+        },
       );
       setCVs([...CVs, newCV.data.resume]);
       toast.success(newCV.data.message);
@@ -53,7 +55,9 @@ function Dashboard() {
       setIsLoading(false);
       navigate(`builder/${newCV.data.resume._id}`);
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message || "An error occurred");
+      toast.error(
+        error.response?.data?.message || error.message || "An error occurred",
+      );
       setIsLoading(false);
     }
   };
@@ -64,14 +68,16 @@ function Dashboard() {
         { resumeId: id },
         {
           headers: {
-            Authorization: `${localStorage.getItem("token")}`,
+            Authorization: `${localStorage.getItem("cvb_token")}`,
           },
-        }
+        },
       );
       setCVs(CVs.filter((cv) => cv._id !== id));
       toast.success(deletedCV.data.message);
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message || "An error occurred");
+      toast.error(
+        error.response?.data?.message || error.message || "An error occurred",
+      );
     }
   };
 
@@ -80,12 +86,15 @@ function Dashboard() {
       try {
         const response = await api.get("user/data", {
           headers: {
-            Authorization: `${localStorage.getItem("token")}`,
+            Authorization: `${localStorage.getItem("cvb_token")}`,
           },
         });
         setCVs(response.data.resume);
+        console.log(response.data.resume);
       } catch (error) {
-        toast.error(error.response?.data?.message || error.message || "An error occurred");
+        toast.error(
+          error.response?.data?.message || error.message || "An error occurred",
+        );
       }
     };
     loadCVs();
@@ -95,28 +104,30 @@ function Dashboard() {
       {/* Welcome Page Section */}
       <section
         id="welcome-page"
-        className="flex items-center justify-center mt-12 flex-col bg-linear-to-br from-indigo-50 to-white py-12 rounded-2xl shadow-lg mx-4"
+        className="flex items-center justify-center mt-12 flex-col bg-indigo-600 py-12 rounded-2xl shadow-lg mx-4"
       >
-        <h1 className="text-6xl font-bold text-indigo-700 text-center tracking-tight drop-shadow-lg">
-          Welcome to CVB
-        </h1>
-        <p className="mt-6 text-2xl text-gray-700 font-light max-w-xl text-center">
-          Create, manage, and preview your professional CVs with ease.
-        </p>
+        <div className="text-center px-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold max-w-4xl mx-auto text-white">
+            Welcome to CVB
+          </h1>
+          <p className="mt-6 text-lg sm:text-2xl text-white font-extralight max-w-xl mx-auto">
+            Create, manage, and preview your professional CVs with ease.
+          </p>
+        </div>
       </section>
       {/* Action Buttons Section */}
       <div
         id="actions"
-        className="flex justify-center items-center mt-12 gap-8"
+        className="flex justify-center items-center mt-12 gap-8 px-4"
       >
         <button
-          className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-6 px-8 rounded-2xl shadow-lg w-48 h-48 flex flex-col items-center justify-center transition-all duration-200 group"
+          className="px-7 py-3 rounded bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow-lg w-48 h-20 flex flex-col items-center justify-center transition-all duration-200 group"
           onClick={() => setShowCreateCV(true)}
         >
           <svg
-            className="mb-3 group-hover:scale-110 transition-transform"
-            width="40"
-            height="40"
+            className="mb-1"
+            width="28"
+            height="28"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
@@ -126,16 +137,16 @@ function Dashboard() {
           >
             <path d="M12 5v14M5 12h14" />
           </svg>
-          <span className="text-xl">Create CV</span>
+          <span className="text-lg">Create CV</span>
         </button>
         <button
-          className="bg-white hover:bg-gray-100 text-indigo-700 font-semibold py-6 px-8 rounded-2xl shadow-lg w-48 h-48 flex flex-col items-center justify-center border border-indigo-100 transition-all duration-200 group"
+          className="px-7 py-3 rounded bg-white hover:bg-gray-50 text-indigo-700 font-medium shadow border border-indigo-100 w-48 h-20 flex flex-col items-center justify-center transition-all duration-200 group"
           onClick={() => setShowUploadCV(true)}
         >
           <svg
-            className="mb-3 group-hover:scale-110 transition-transform"
-            width="40"
-            height="40"
+            className="mb-1"
+            width="28"
+            height="28"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
@@ -145,41 +156,41 @@ function Dashboard() {
           >
             <path d="M16 16v6H8v-6M12 12v10M20 12l-8-8-8 8" />
           </svg>
-          <span className="text-xl">Upload CV</span>
+          <span className="text-lg">Upload CV</span>
         </button>
       </div>
       {/* History Section */}
       <section
         id="history"
-        className="px-4 flex flex-col mt-14 max-w-3xl mx-auto mb-14"
+        className="px-4 flex flex-col mt-14 max-w-4xl mx-auto mb-14"
       >
-        <h2 className="text-2xl font-bold mb-6 text-indigo-700">
+        <h2 className="text-3xl font-bold mb-6 text-indigo-700">
           Your Recent CVs
         </h2>
         <div className="grid gap-6">
           {CVs.map((cv, idx) => (
             <div
               key={cv._id || idx}
-              className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 flex justify-between items-center hover:shadow-xl transition-shadow duration-200"
+              className="bg-white rounded-2xl shadow-lg p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center hover:shadow-xl transition-shadow duration-200 border"
             >
-              <div>
+              <div className="mb-4 sm:mb-0">
                 <h3 className="text-xl font-semibold text-gray-900 mb-1">
                   {cv.title}
                 </h3>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-600 max-w-xl">
                   {cv.professional_summary ||
-                    "Last modified: " + (cv.updatedAt || "N/A")}
+                    `Last modified: ${cv.updatedAt || "N/A"}`}
                 </p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 <button
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-5 rounded-lg font-medium transition-colors duration-150"
+                  className="px-4 py-2 rounded bg-indigo-600 hover:bg-indigo-700 text-white font-medium"
                   onClick={() => navigate(`builder/${cv._id || idx}`)}
                 >
                   Edit
                 </button>
                 <button
-                  className="bg-red-500 hover:bg-red-600 text-white py-2 px-5 rounded-lg font-medium transition-colors duration-150"
+                  className="px-4 py-2 rounded bg-red-500 hover:bg-red-600 text-white font-medium"
                   onClick={() => deleteCV(cv._id || idx)}
                 >
                   Delete
@@ -193,7 +204,7 @@ function Dashboard() {
       {showCreateCV && (
         <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm">
           <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border border-indigo-100">
-            <h2 className="text-3xl font-bold mb-6 text-indigo-700">
+            <h2 className="text-2xl font-bold mb-6 text-indigo-700">
               Create CV
             </h2>
             <form>
@@ -212,14 +223,14 @@ function Dashboard() {
               <div className="flex justify-end gap-2">
                 <button
                   type="submit"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-lg font-semibold transition-colors duration-150"
+                  className="px-4 py-2 rounded bg-indigo-600 hover:bg-indigo-700 text-white font-medium"
                   onClick={createCV}
                 >
                   Create
                 </button>
                 <button
                   type="button"
-                  className="ml-2 text-gray-600 hover:text-indigo-600 font-medium"
+                  className="px-4 py-2 rounded text-gray-700 hover:text-indigo-700 font-medium"
                   onClick={() => setShowCreateCV(false)}
                 >
                   Cancel
@@ -233,7 +244,7 @@ function Dashboard() {
       {showUploadCV && (
         <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm">
           <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border border-indigo-100">
-            <h2 className="text-3xl font-bold mb-6 text-indigo-700">
+            <h2 className="text-2xl font-bold mb-6 text-indigo-700">
               Upload CV
             </h2>
             <form>
@@ -251,15 +262,15 @@ function Dashboard() {
               <div className="flex justify-end gap-2">
                 <button
                   type="submit"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-lg font-semibold transition-colors duration-150"
+                  className="px-4 py-2 rounded bg-indigo-600 hover:bg-indigo-700 text-white font-medium flex items-center gap-2"
                   onClick={UploadCV}
-                  disabled={ isloading ? true : false }
+                  disabled={isloading ? true : false}
                 >
-                  {isloading ? <Loader2 className="animate-spin"/> : "upload" }
+                  {isloading ? <Loader2 className="animate-spin" /> : "Upload"}
                 </button>
                 <button
                   type="button"
-                  className="ml-2 text-gray-600 hover:text-indigo-600 font-medium"
+                  className="px-4 py-2 rounded text-gray-700 hover:text-indigo-700 font-medium"
                   onClick={() => setShowUploadCV(false)}
                 >
                   Cancel

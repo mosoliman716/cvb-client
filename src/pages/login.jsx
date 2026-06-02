@@ -21,7 +21,7 @@ const Login = () => {
      
     try {
       const response = await api.post(`user/${state}`, formData);
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("cvb_token", response.data.token);
       toast.success(response.data.message);
       navigate("/app");
     } catch (error) {

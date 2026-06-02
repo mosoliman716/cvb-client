@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const getApiBaseUrl = () => {
-  return "https://cvb-server-production.up.railway.app/api";
+  return "http://localhost:3000/api/";
 };
 
 const API_BASE_URL = getApiBaseUrl();

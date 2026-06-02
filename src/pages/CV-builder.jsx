@@ -9,6 +9,7 @@ import Skills from "../components/builder/Skills";
 import ClassicTemplate from "../assets/templates/ClassicTemplate";
 import ModernTemplate from "../assets/templates/ModernTemplate";
 import MinimalTemplate from "../assets/templates/MinimalTemplate";
+import ATS_Template from "../assets/templates/ATS-template";
 import { useNavigate } from "react-router-dom";
 import { api } from "../config/api";
 import { toast } from "react-hot-toast";
@@ -34,17 +35,24 @@ function CVBuilder() {
   async function saveResume() {
     try {
       const id = window.location.href.split("/").pop();
-      const response = await api.put(`resume/update`, {
-        resumeId: id,
-        resumeData,
-      },{
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
+      const response = await api.put(
+        `resume/update`,
+        {
+          resumeId: id,
+          resumeData,
         },
-      });
+        {
+          headers: {
+            Authorization: `${localStorage.getItem("cvb_token")}`,
+          },
+        },
+      );
+      console.log(response.data.resume);
       toast.success(response.data.message);
-    } catch(error){
-      toast.error(error.response?.data?.message || error.message || "An error occurred");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || error.message || "An error occurred",
+      );
     }
   }
   function nextFormSection() {
@@ -79,13 +87,17 @@ function CVBuilder() {
         const id = window.location.href.split("/").pop();
         const response = await api.get(`resume/data/${id}`, {
           headers: {
-            Authorization: `${localStorage.getItem("token")}`,
+            Authorization: `${localStorage.getItem("cvb_token")}`,
           },
         });
         console.log(response.data.resume);
         setResumeData(response.data.resume);
       } catch (error) {
-        toast.error(error.response?.data?.message || error.message || "Failed to load resume");
+        toast.error(
+          error.response?.data?.message ||
+            error.message ||
+            "Failed to load resume",
+        );
       }
     }
     loadExsistingResume();
@@ -93,37 +105,37 @@ function CVBuilder() {
 
   return (
     <>
-      <div className="flex flex-col items-start justify-left">
-        <button className="btn btn-ghost normal-case text-xl bg-indigo-500 border-l-white p-3 rounded-lg text-white hover:bg-indigo-600">
-          <Link to="/app">back</Link>
+      <div className="flex flex-col items-start">
+        <button className="inline-flex items-center gap-2 bg-indigo-500 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-600">
+          <Link to="/app">Back</Link>
         </button>
       </div>
       {/* controls */}
       <div className="flex flex-row justify-end items-end mt-3 gap-3">
         <button
-          className="cursor-pointer normal-case text-xl bg-white-500 p-3 rounded-lg text-indigo-600 border-indigo-600 border-2"
+          className="px-4 py-2 rounded bg-indigo-600 text-white font-medium shadow hover:bg-indigo-700"
           onClick={() => nextFormSection()}
           disabled={selectedSectionindex === sections.length - 1}
         >
-          next
+          Next
         </button>
         <button
-          className="cursor-pointer normal-case text-xl bg-white-500 p-3 rounded-lg text-indigo-600 border-indigo-600 border-2"
+          className="px-4 py-2 rounded bg-white border border-indigo-100 text-indigo-600 font-medium hover:bg-indigo-50"
           onClick={() => prevFormSection()}
           disabled={selectedSectionindex === 0}
         >
-          previous
+          Previous
         </button>
         <button
-          className="cursor-pointer normal-case text-xl bg-white-500 p-3 rounded-lg text-indigo-600 border-indigo-600 border-2"
+          className="px-4 py-2 rounded bg-white border border-indigo-100 text-indigo-600 font-medium hover:bg-indigo-50"
           onClick={() => shareCv()}
         >
-          share
+          Share
         </button>
       </div>
       <div className="flex md:flex-row  flex-col justify-center items-center p-3 gap-3 mt-5 relative">
         {/* forms content */}
-        <div className="md:w-3/5 w-full flex flex-col p-3 rounded-lg border-2 border-indigo-500 md:absolute top-0 left-0 bg-white z-10 h-[700px] overflow-y-auto">
+        <div className="md:w-3/5 w-full flex flex-col p-6 rounded-lg border border-gray-200 md:absolute top-0 left-0 bg-white z-20 h-[700px] overflow-y-auto shadow-lg">
           <div className="flex flex-row justify-between items-center">
             <h2 className="font-bold mb-4">
               {sections[selectedSectionindex].title}
@@ -147,6 +159,9 @@ function CVBuilder() {
                 </option>
                 <option value="minimal" className="">
                   Minimal Template
+                </option>
+                <option value="ats" className="">
+                  ATS Template
                 </option>
               </select>
               <select
@@ -231,7 +246,7 @@ function CVBuilder() {
           </button>
         </div>
         {/* preview content */}
-        <div className="md:w-1/3 w-full flex flex-col p-3 md:absolute top-0 right-0 z-10 border-2 border-indigo-500 rounded-lg bg-white h-[700px] overflow-y-auto">
+        <div className="md:w-1/3 w-full flex flex-col p-6 md:absolute top-0 right-0 z-20 border border-gray-200 rounded-lg bg-white h-[700px] overflow-y-auto shadow-lg">
           {selectedTemplate === "classic" && (
             <ClassicTemplate
               data={resumeData}
@@ -250,6 +265,7 @@ function CVBuilder() {
               accentColor={resumeData.accent_color}
             />
           )}
+          {selectedTemplate === "ats" && <ATS_Template data={resumeData} />}
         </div>
       </div>
     </>

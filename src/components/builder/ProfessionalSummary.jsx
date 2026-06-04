@@ -8,10 +8,11 @@ function ProfessionalSummary({ data, change }) {
   const AiSummaryEnhance = async () => {
     setIsLoading(true)
     try {
-      const response = await api.post("/ai/enhance-professional-summary", { summary: data });
+      const response = await api.post("ai/enhance-professional-summary", { summary: data });
       change(response.data.summary);
       setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error(error);
     }
   }
